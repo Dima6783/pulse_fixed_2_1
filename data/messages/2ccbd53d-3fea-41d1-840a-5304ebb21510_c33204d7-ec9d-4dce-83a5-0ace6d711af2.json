@@ -1,0 +1,66 @@
+[
+  {
+    "id": "42b8a261-0e6b-4c57-8973-03547f5dc27d",
+    "chat_id": "2ccbd53d-3fea-41d1-840a-5304ebb21510_c33204d7-ec9d-4dce-83a5-0ace6d711af2",
+    "sender_id": "2ccbd53d-3fea-41d1-840a-5304ebb21510",
+    "sender_name": "Dima 516",
+    "text": "",
+    "attachment": {
+      "url": "/static/uploads/image/5efa40190ce948c3b47dad4d19b025e3.jpg",
+      "type": "image",
+      "filename": "IMG-20260630-WA0001.jpg",
+      "size_fmt": "89.1 KB",
+      "ext": "jpg",
+      "meta": {
+        "format": "JPEG",
+        "height": 1600,
+        "width": 720
+      },
+      "verified": null
+    },
+    "voice": null,
+    "voice_dur": null,
+    "p2p_file": null,
+    "timestamp": "2026-07-01T00:49:45.257582",
+    "read": false,
+    "reply_to": null,
+    "edited": false
+  },
+  {
+    "id": "72344f8b-a39f-47d7-b555-a5b80954a806",
+    "chat_id": "2ccbd53d-3fea-41d1-840a-5304ebb21510_c33204d7-ec9d-4dce-83a5-0ace6d711af2",
+    "sender_id": "c33204d7-ec9d-4dce-83a5-0ace6d711af2",
+    "sender_name": "dima ru",
+    "text": "",
+    "attachment": null,
+    "voice": null,
+    "voice_dur": null,
+    "p2p_file": {
+      "filename": "ventoy-1.1.16-windows.zip",
+      "size_fmt": "15.9 MB"
+    },
+    "timestamp": "2026-07-01T00:50:28.941905",
+    "read": false,
+    "reply_to": null,
+    "edited": false
+  },
+  {
+    "id": "1d43f266-9256-47e5-b194-e3d6f077df31",
+    "chat_id": "2ccbd53d-3fea-41d1-840a-5304ebb21510_c33204d7-ec9d-4dce-83a5-0ace6d711af2",
+    "sender_id": "2ccbd53d-3fea-41d1-840a-5304ebb21510",
+    "sender_name": "Dima 516",
+    "text": "Dkk",
+    "attachment": null,
+    "voice": null,
+    "voice_dur": null,
+    "p2p_file": null,
+    "timestamp": "2026-07-01T00:51:35.007828",
+    "read": false,
+    "reply_to": {
+      "id": "72344f8b-a39f-47d7-b555-a5b80954a806",
+      "text": "",
+      "sender_name": "dima ru"
+    },
+    "edited": false
+  }
+]

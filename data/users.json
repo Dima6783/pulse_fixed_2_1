@@ -1,0 +1,70 @@
+{
+  "c33204d7-ec9d-4dce-83a5-0ace6d711af2": {
+    "id": "c33204d7-ec9d-4dce-83a5-0ace6d711af2",
+    "first_name": "dima",
+    "last_name": "ru",
+    "username": "admin",
+    "number": "91748606",
+    "password": "6ddc40645bba72f512fe4e4a9ae47ae7b053fefbc35551ed45967969be2e17be",
+    "token": "6cf69b54-c326-42c5-8959-f14ea422e2bb",
+    "avatar": null,
+    "status": "Merhaba, Pulse kullanıyorum!",
+    "online": true,
+    "created_at": "2026-07-01T00:45:13.412290",
+    "contacts": [],
+    "theme": "dark",
+    "lang": "tr"
+  },
+  "2ccbd53d-3fea-41d1-840a-5304ebb21510": {
+    "id": "2ccbd53d-3fea-41d1-840a-5304ebb21510",
+    "first_name": "Dima",
+    "last_name": "516",
+    "username": "dima1",
+    "number": "94486494",
+    "password": "bad435e24165557f17f9cfe32a7b182c508263c2b6903a81e3cddd9b72ef7a3f",
+    "token": "20583b91-3742-4936-b314-1d7f25c94e8c",
+    "avatar": null,
+    "status": "Merhaba, Pulse kullanıyorum!",
+    "online": false,
+    "created_at": "2026-07-01T00:49:16.284111",
+    "contacts": [
+      "c33204d7-ec9d-4dce-83a5-0ace6d711af2"
+    ],
+    "theme": "dark",
+    "lang": "tr"
+  },
+  "0d770ece-462f-4ca4-9bf1-7ace3c26ea23": {
+    "id": "0d770ece-462f-4ca4-9bf1-7ace3c26ea23",
+    "first_name": "dima",
+    "last_name": "ru",
+    "username": "pud6597@gmail.com",
+    "number": "75897908",
+    "password": "32df3f12996218b49abdd64c770265d9ad8d06c7107600ac9b7e4705ea65799a",
+    "token": "847bbc3e-ebbe-47fe-9e87-541cbc956106",
+    "avatar": "/static/avatars/0d770ece-462f-4ca4-9bf1-7ace3c26ea23_e12fd71e1a4f4d1abfbca72c1eccf60a.png",
+    "status": "Merhaba, Pulse kullanıyorum!",
+    "online": true,
+    "created_at": "2026-07-30T05:59:59.206695",
+    "contacts": [],
+    "theme": "dark",
+    "lang": "tr"
+  },
+  "94ad8e0e-f1d3-4077-b5ce-debbe65c905b": {
+    "id": "94ad8e0e-f1d3-4077-b5ce-debbe65c905b",
+    "first_name": "Dima",
+    "last_name": "Axlex",
+    "username": "dima11",
+    "number": "17753713",
+    "password": "32df3f12996218b49abdd64c770265d9ad8d06c7107600ac9b7e4705ea65799a",
+    "token": "cebd7825-076b-4310-ac4d-e99077bd89ae",
+    "avatar": "/static/avatars/94ad8e0e-f1d3-4077-b5ce-debbe65c905b_2905174cd48d4ffea5e4f6ea238f2d54.png",
+    "status": "Merhaba, Pulse kullanıyorum!",
+    "online": false,
+    "created_at": "2026-07-30T06:02:48.592997",
+    "contacts": [
+      "0d770ece-462f-4ca4-9bf1-7ace3c26ea23"
+    ],
+    "theme": "dark",
+    "lang": "tr"
+  }
+}

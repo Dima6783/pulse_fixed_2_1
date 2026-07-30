@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0c10">
+<title>Pulse Messenger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/app.css">
+<link rel="manifest" href="/static/manifest.json">
+<link rel="icon" href="/static/icon-192.png">
+<link rel="apple-touch-icon" href="/static/icon-192.png">
+</head>
+<body class="dark">
+
+<!-- ═══ AUTH ══════════════════════════════════════════════════════════════════ -->
+<div id="auth-screen" class="screen active">
+  <div class="auth-bg">
+    <div class="auth-orb orb1"></div>
+    <div class="auth-orb orb2"></div>
+    <div class="auth-orb orb3"></div>
+  </div>
+  <div class="auth-container">
+    <div class="auth-logo">
+      <div class="logo-icon">⚡</div>
+      <h1>Pulse</h1>
+      <p>Мессенджер нового поколения</p>
+    </div>
+
+    <div id="login-form" class="auth-card">
+      <h2>Добро пожаловать</h2>
+      <div class="field">
+        <label>Имя пользователя</label>
+        <input type="text" id="login-username" placeholder="@username" autocomplete="username" autocorrect="off" autocapitalize="none">
+      </div>
+      <div class="field">
+        <label>Пароль</label>
+        <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <div id="login-error" class="error-msg"></div>
+      <button class="btn-primary" onclick="doLogin()">Войти</button>
+      <p class="auth-switch">Нет аккаунта? <a onclick="showRegister()">Зарегистрироваться</a></p>
+    </div>
+
+    <div id="register-form" class="auth-card hidden">
+      <h2>Создать аккаунт</h2>
+      <div class="field-row">
+        <div class="field"><label>Имя</label><input type="text" id="reg-firstname" placeholder="Иван"></div>
+        <div class="field"><label>Фамилия</label><input type="text" id="reg-lastname" placeholder="Иванов"></div>
+      </div>
+      <div class="field"><label>Username</label><input type="text" id="reg-username" placeholder="@username" autocorrect="off" autocapitalize="none"></div>
+      <div class="field"><label>Пароль</label><input type="password" id="reg-password" placeholder="Минимум 6 символов" autocomplete="new-password"></div>
+      <div id="reg-error" class="error-msg"></div>
+      <button class="btn-primary" onclick="doRegister()">Создать аккаунт</button>
+      <p class="auth-switch">Уже есть аккаунт? <a onclick="showLogin()">Войти</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ APP ════════════════════════════════════════════════════════════════════ -->
+<div id="app-screen" class="screen">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-sm">
+        <div class="logo-sm-icon">⚡</div>
+        Pulse
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" onclick="openModal('new-chat-modal')" title="Новый чат">✏️</button>
+        <button class="icon-btn" onclick="toggleTheme()" id="theme-btn" title="Тема">🌙</button>
+        <button class="icon-btn" onclick="openModal('profile-modal'); loadProfileModal()" title="Профиль">👤</button>
+      </div>
+    </div>
+
+    <div class="search-wrap">
+      <input type="text" id="chat-search" placeholder="🔍 Поиск чатов..." oninput="filterChats(this.value)">
+    </div>
+
+    <nav class="tab-nav">
+      <button class="tab active" onclick="switchTab('chats')" data-tab="chats">Чаты</button>
+      <button class="tab" onclick="switchTab('groups')" data-tab="groups">Группы</button>
+      <button class="tab" onclick="switchTab('channels')" data-tab="channels">Каналы</button>
+      <button class="tab" onclick="switchTab('contacts')" data-tab="contacts">Контакты</button>
+    </nav>
+
+    <div id="chat-list" class="chat-list"></div>
+
+    <div class="sidebar-footer">
+      <button class="icon-btn" onclick="openBotManager()" title="Боты">🤖</button>
+      <button class="icon-btn danger" onclick="doLogout()" title="Выйти">🚪</button>
+    </div>
+  </aside>
+
+  <!-- CHAT AREA -->
+  <main id="chat-area" class="chat-area">
+    <div id="empty-state" class="empty-state">
+      <div class="empty-icon">⚡</div>
+      <h3>Pulse Messenger</h3>
+      <p>Выберите чат или начните новую переписку</p>
+      <button class="btn-primary" onclick="openModal('new-chat-modal')">✏️ Новый чат</button>
+    </div>
+
+    <div id="chat-view" class="hidden">
+      <div class="chat-header">
+        <button class="back-btn icon-btn" onclick="closeChat()">←</button>
+        <div class="chat-header-info" onclick="openChatInfo()">
+          <div class="chat-avatar-sm" id="chat-header-avatar"></div>
+          <div>
+            <div class="chat-header-name" id="chat-header-name"></div>
+            <div class="chat-header-status" id="chat-header-status"></div>
+          </div>
+        </div>
+        <div class="chat-header-actions">
+          <button class="icon-btn call-btn" id="audio-call-btn" onclick="startCall('audio')" title="Голосовой звонок">📞</button>
+          <button class="icon-btn call-btn" id="video-call-btn" onclick="startCall('video')" title="Видеозвонок">📹</button>
+          <button class="icon-btn" onclick="openChatInfo()" title="Информация">ℹ️</button>
+        </div>
+      </div>
+
+      <div id="messages-container" class="messages-container">
+        <div id="load-more-btn" class="load-more hidden">
+          <button onclick="loadMoreMessages()">↑ Загрузить ещё</button>
+        </div>
+        <div id="messages-list"></div>
+        <div id="typing-area"></div>
+      </div>
+
+      <div id="reply-preview" class="reply-preview hidden">
+        <div class="reply-text"></div>
+        <button onclick="cancelReply()">✕</button>
+      </div>
+
+      <div id="edit-preview" class="reply-preview edit-preview hidden">
+        <div class="reply-text">✏️ Редактирование</div>
+        <button onclick="cancelEdit()">✕</button>
+      </div>
+
+      <div class="message-input-area" id="message-input-area">
+        <button class="icon-btn" onclick="openEmojiPicker()" title="Эмодзи">😊</button>
+        <button class="icon-btn" onclick="triggerFileInput()" title="Прикрепить файл">📎</button>
+        <button class="icon-btn" id="p2p-file-btn" onclick="triggerP2PFileInput()" title="Передать файл напрямую (P2P, без сервера)">📡</button>
+        <button class="icon-btn" id="voice-btn"
+          onmousedown="startVoice()" onmouseup="stopVoice()"
+          ontouchstart="startVoice(event)" ontouchend="stopVoice(event)"
+          title="Голосовое сообщение">🎤</button>
+        <textarea id="message-input" placeholder="Написать сообщение..." rows="1"
+          oninput="autoResize(this); sendTyping()"
+          onkeydown="handleMsgKey(event)"></textarea>
+        <button class="send-btn" onclick="sendMessage()">➤</button>
+      </div>
+
+      <input type="file" id="file-input-any" style="display:none" onchange="handleFileUpload(this)"
+        accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.zip,.rar,.txt,.csv">
+      <input type="file" id="file-input-p2p" style="display:none" onchange="handleP2PFileSelect(this)">
+    </div>
+  </main>
+</div>
+
+<!-- ═══ P2P FILE TRANSFER PANEL ════════════════════════════════════════════════ -->
+<div id="p2p-transfer-panel" class="p2p-transfer-panel hidden">
+  <div class="p2p-transfer-info">
+    <div class="p2p-transfer-icon">📡</div>
+    <div class="p2p-transfer-text">
+      <div class="p2p-transfer-name" id="p2p-transfer-name">file.ext</div>
+      <div class="p2p-transfer-status" id="p2p-transfer-status">Ожидание...</div>
+    </div>
+  </div>
+  <div class="p2p-transfer-bar"><div class="p2p-transfer-fill" id="p2p-transfer-fill"></div></div>
+  <div class="p2p-transfer-actions" id="p2p-transfer-actions"></div>
+</div>
+
+<!-- ═══ CALL OVERLAY ═══════════════════════════════════════════════════════════ -->
+<div id="call-overlay" class="call-overlay hidden">
+  <div class="call-box">
+    <div class="call-avatar" id="call-avatar">?</div>
+    <div class="call-name" id="call-name">Звонок</div>
+    <div class="call-status" id="call-status">Звоним...</div>
+    <div class="call-timer hidden" id="call-timer">00:00</div>
+    <video id="remote-video" class="call-video hidden" autoplay playsinline></video>
+    <video id="local-video" class="call-video-local hidden" autoplay playsinline muted></video>
+    <div class="call-actions">
+      <button class="call-action-btn mute-btn" id="mute-btn" onclick="toggleMute()" title="Микрофон">🎤</button>
+      <button class="call-action-btn cam-btn" id="cam-btn" onclick="toggleCamera()" title="Камера">📹</button>
+      <button class="call-action-btn end-btn" onclick="endCall()" title="Завершить">📵</button>
+    </div>
+    <div class="call-incoming-actions hidden" id="call-incoming-actions">
+      <button class="call-action-btn accept-btn" onclick="acceptCall()">✅</button>
+      <button class="call-action-btn end-btn" onclick="rejectCall()">❌</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MODALS ═══════════════════════════════════════════════════════════════ -->
+
+<!-- New Chat -->
+<div id="new-chat-modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h3>Новый чат</h3>
+      <button onclick="closeModal('new-chat-modal')">✕</button>
+    </div>
+    <div class="modal-tabs">
+      <button class="mtab active" onclick="switchModalTab('new-chat-modal','dm')">💬 Личный</button>
+      <button class="mtab" onclick="switchModalTab('new-chat-modal','group')">👥 Группа</button>
+      <button class="mtab" onclick="switchModalTab('new-chat-modal','channel')">📢 Канал</button>
+    </div>
+    <div data-tab="dm">
+      <input type="text" id="user-search-input" placeholder="Поиск по @username или #номеру"
+        oninput="searchUsers(this.value)" autocorrect="off" autocapitalize="none">
+      <button class="btn-primary" style="margin-top:8px;background:var(--bg4);color:var(--text)" onclick="startQrScan()">📷 Сканировать QR-код</button>
+      <div id="user-search-results" class="search-results"></div>
+    </div>
+    <div data-tab="group" class="hidden">
+      <input type="text" id="group-name" placeholder="Название группы">
+      <input type="text" id="group-desc" placeholder="Описание (опционально)">
+      <input type="text" id="group-member-search" placeholder="Добавить участников"
+        oninput="searchUsersForGroup(this.value)" autocorrect="off" autocapitalize="none">
+      <div id="group-member-results" class="search-results"></div>
+      <div id="selected-members" class="selected-members"></div>
+      <button class="btn-primary" onclick="createGroup()">Создать группу</button>
+    </div>
+    <div data-tab="channel" class="hidden">
+      <input type="text" id="channel-name" placeholder="Название канала">
+      <input type="text" id="channel-desc" placeholder="Описание">
+      <label class="toggle-label">
+        <input type="checkbox" id="channel-public" checked>
+        <span>Публичный канал</span>
+      </label>
+      <button class="btn-primary" onclick="createChannel()">Создать канал</button>
+    </div>
+  </div>
+</div>
+
+<!-- Profile -->
+<div id="profile-modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h3>Мой профиль</h3>
+      <button onclick="closeModal('profile-modal')">✕</button>
+    </div>
+    <div class="profile-card">
+      <div class="profile-avatar" id="profile-avatar-display" onclick="pickAvatarFile()" style="cursor:pointer" title="Нажмите, чтобы сменить фото"></div>
+      <input type="file" id="profile-avatar-input" accept="image/*" class="hidden" onchange="onAvatarFileChosen(this)">
+      <button class="btn-sm" onclick="pickAvatarFile()">📷 Сменить фото</button>
+      <div id="profile-number-display" class="profile-number"></div>
+    </div>
+    <div class="field"><label>Имя</label><input type="text" id="profile-firstname"></div>
+    <div class="field"><label>Фамилия</label><input type="text" id="profile-lastname"></div>
+    <div class="field"><label>О себе (описание)</label><input type="text" id="profile-status"></div>
+    <button class="btn-primary" onclick="saveProfile()">Сохранить</button>
+    <button class="btn-primary" style="margin-top:8px;background:var(--bg4);color:var(--text)" onclick="openMyQr()">🔳 Мой QR-код</button>
+  </div>
+</div>
+
+<!-- My QR -->
+<div id="qr-modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h3>Мой QR-код</h3>
+      <button onclick="closeModal('qr-modal')">✕</button>
+    </div>
+    <p style="text-align:center;color:var(--text2);font-size:13px;margin-bottom:10px">
+      Пусть собеседник отсканирует этот код, чтобы добавить вас в контакты
+    </p>
+    <div id="qr-canvas-holder" style="display:flex;justify-content:center;padding:12px;background:#fff;border-radius:12px"></div>
+    <div id="qr-my-handle" style="text-align:center;margin-top:10px;font-weight:600"></div>
+  </div>
+</div>
+
+<!-- Scan QR -->
+<div id="qr-scan-modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h3>Сканировать QR</h3>
+      <button onclick="stopQrScan()">✕</button>
+    </div>
+    <video id="qr-scan-video" style="width:100%;border-radius:12px;background:#000" playsinline muted></video>
+    <canvas id="qr-scan-canvas" class="hidden"></canvas>
+    <p id="qr-scan-status" style="text-align:center;color:var(--text2);font-size:13px;margin-top:10px">Наведите камеру на QR-код</p>
+  </div>
+</div>
+
+<!-- Chat Info -->
+<div id="chat-info-modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h3 id="chat-info-title">Информация</h3>
+      <button onclick="closeModal('chat-info-modal')">✕</button>
+    </div>
+    <div id="chat-info-content"></div>
+  </div>
+</div>
+
+<!-- Add People (generic: group members / channel subscribers / channel admins) -->
+<div id="add-people-modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h3 id="add-people-title">Добавить</h3>
+      <button onclick="closeModal('add-people-modal')">✕</button>
+    </div>
+    <input type="text" id="add-people-search" placeholder="Поиск по @username или #номеру"
+      oninput="searchAddPeople(this.value)" autocorrect="off" autocapitalize="none">
+    <div id="add-people-results" class="search-results"></div>
+    <div id="add-people-selected" class="selected-members"></div>
+    <button class="btn-primary" onclick="confirmAddPeople()">Добавить</button>
+  </div>
+</div>
+
+<!-- Bot Manager -->
+<div id="bot-modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h3>🤖 Боты</h3>
+      <button onclick="closeModal('bot-modal')">✕</button>
+    </div>
+    <div id="bot-list" class="bot-list"></div>
+    <hr>
+    <h4>Создать бота</h4>
+    <input type="text" id="bot-name" placeholder="Имя бота">
+    <input type="text" id="bot-desc" placeholder="Описание">
+    <button class="btn-primary" onclick="createBot()">Создать</button>
+  </div>
+</div>
+
+<!-- Public Channels -->
+<div id="pub-channels-modal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <h3>📢 Публичные каналы</h3>
+      <button onclick="closeModal('pub-channels-modal')">✕</button>
+    </div>
+    <div id="pub-channels-list"></div>
+  </div>
+</div>
+
+<!-- Emoji Picker -->
+<div id="emoji-picker" class="emoji-picker hidden">
+  <div class="emoji-grid" id="emoji-grid"></div>
+</div>
+
+<!-- Upload progress -->
+<div id="upload-progress" class="upload-progress hidden">
+  <div class="upload-bar"><div class="upload-fill" id="upload-fill"></div></div>
+  <span id="upload-label">Загрузка...</span>
+</div>
+
+<!-- Message context menu -->
+<div id="msg-ctx-menu" class="ctx-menu hidden">
+  <button onclick="ctxReply()">↩ Ответить</button>
+  <button onclick="ctxEdit()" id="ctx-edit-btn">✏️ Редактировать</button>
+  <button onclick="ctxDelete()" id="ctx-delete-btn" class="danger-text">🗑️ Удалить</button>
+  <button onclick="ctxCopy()">📋 Копировать</button>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

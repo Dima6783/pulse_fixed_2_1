@@ -1,0 +1,32 @@
+[
+  {
+    "id": "14cbe9d5-92d9-472f-9acf-9a7f67ec6fb1",
+    "chat_id": "0d770ece-462f-4ca4-9bf1-7ace3c26ea23_94ad8e0e-f1d3-4077-b5ce-debbe65c905b",
+    "sender_id": "94ad8e0e-f1d3-4077-b5ce-debbe65c905b",
+    "sender_name": "Dima Axlex",
+    "text": "🎵",
+    "attachment": null,
+    "voice": null,
+    "voice_dur": null,
+    "p2p_file": null,
+    "timestamp": "2026-07-30T06:04:10.869871",
+    "read": false,
+    "reply_to": null,
+    "edited": false
+  },
+  {
+    "id": "9734a20e-9ed8-47e5-bff5-6339fa46fe32",
+    "chat_id": "0d770ece-462f-4ca4-9bf1-7ace3c26ea23_94ad8e0e-f1d3-4077-b5ce-debbe65c905b",
+    "sender_id": "94ad8e0e-f1d3-4077-b5ce-debbe65c905b",
+    "sender_name": "Dima Axlex",
+    "text": "Znjx",
+    "attachment": null,
+    "voice": null,
+    "voice_dur": null,
+    "p2p_file": null,
+    "timestamp": "2026-07-30T06:04:13.775984",
+    "read": false,
+    "reply_to": null,
+    "edited": false
+  }
+]

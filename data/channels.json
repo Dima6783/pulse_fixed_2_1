@@ -1,0 +1,24 @@
+{
+  "ch_92b557df": {
+    "id": "ch_92b557df",
+    "name": "A",
+    "description": "A",
+    "owner": "2ccbd53d-3fea-41d1-840a-5304ebb21510",
+    "subscribers": [
+      "2ccbd53d-3fea-41d1-840a-5304ebb21510"
+    ],
+    "public": false,
+    "created_at": "2026-07-01T00:52:24.245707"
+  },
+  "ch_0c911148": {
+    "id": "ch_0c911148",
+    "name": "xz",
+    "description": "gggggggggggg",
+    "owner": "c33204d7-ec9d-4dce-83a5-0ace6d711af2",
+    "subscribers": [
+      "c33204d7-ec9d-4dce-83a5-0ace6d711af2"
+    ],
+    "public": false,
+    "created_at": "2026-07-01T00:53:47.732189"
+  }
+}
